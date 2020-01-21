@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-db
+  labels:
+    name: monog-deployment
+    app: test-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: test-mongo-pod
+      app: test-app
+  template:
+    metadata:
+      name:  mongo
+      labels:
+        name:  test-mongo-pod
+        app: test-app
+    spec:
+      containers:
+        - name:  mongo-contanier
+          image:  mongo
+          ports:
+            - containerPort: 27017
+
+
+
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: mongo
+  labels:
+    name: mongo-service
+    app: test-app
+spec:
+  ports:
+  - name:  mongo-port
+    port:  27017
+    targetPort: 27017
+  selector:
+    name:  test-mongo-pod
+    app: test-app
