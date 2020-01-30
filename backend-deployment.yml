@@ -20,9 +20,12 @@ spec:
     spec:
       containers:
         - name:  backend-contanier
-          image:  sabarivig/test-server:0.0.2
+          image:  sabarivig/test-server:0.0.3
           ports:
             - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: backend-config
 
 
 
@@ -31,7 +34,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: test-network
+  name: server
   labels:
     name: backend-service
     app: test-app
@@ -45,3 +48,14 @@ spec:
     name: test-backend-pod
     app: test-app
 
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+data:
+  MONGO:"mongodb://localhost:27017/test"
+  REDIS_URL:redis
+  REDIS_PORT:6379
+  API_KEY:lD1kuNzap9chSyPn11IeL7YfBF3hjOl4OrYRSnxyq09WMVFfIR6vIwf27k0Y
